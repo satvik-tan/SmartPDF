@@ -1,5 +1,5 @@
 import {qdrant_client} from './qdrant_client';
-import { Point } from '../types/types';
+import { Point } from '../../types/types';
 
 //this function ensures that a collection exists in Qdrant, creating it if it does not.
 export async function ensureCollection(name: string){
@@ -18,6 +18,8 @@ export async function ensureCollection(name: string){
     } else {
         console.log(`Collection ${name} already exists.`);
     }
+
+    
     
 
 }
@@ -37,4 +39,14 @@ export async function insertPoints(collectionName: string, points: Point[]) {
 
 
 //a function to search points using query vector
+export async function searchPoints(collectionName: string, queryVector: number[], limit: number = 5) 
+    {
+        await ensureCollection(collectionName);
+        const response = await qdrant_client.search(collectionName, {
+            vector: queryVector,
+            limit: limit,
+            with_payload: true
+        })
 
+        return response;
+    }

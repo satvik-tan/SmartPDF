@@ -14,9 +14,12 @@
     "@qdrant/js-client-rest": "^1.14.1",
     "dotenv": "^16.5.0",
     "fastembed": "^1.14.4",
+    "install": "^0.13.0",
+    "pdf-parse": "^1.1.1",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
-    "@types/node": "^22.15.29"
+    "@types/node": "^22.15.29",
+    "@types/pdf-parse": "^1.1.5"
   }
 }

@@ -2,6 +2,7 @@ import { FlagEmbedding, EmbeddingModel } from 'fastembed';
 import { qdrant_client } from '../vector_store/qdrant_client';
 import { ensureCollection } from '../vector_store/store';
 import {v4 as uuidv4} from 'uuid';
+import { Point } from '../types/types';
 const embeddingModel = await FlagEmbedding.init({
     model: EmbeddingModel.BGEBaseEN
 });
@@ -17,13 +18,7 @@ let documents = [
 
 const embeddings = embeddingModel.embed(documents, 2);
 
-interface Point {
-    id: string;
-    vector: number[];
-    payload: {
-        text: string;
-    };
-}
+
 let points: Point[] = [];
 let id =1;
 for await (const batch of embeddings){
@@ -41,13 +36,7 @@ for await (const batch of embeddings){
 
 const collectionName = 'test_collection';
 await ensureCollection(collectionName);
-await qdrant_client.upsert(collectionName, {
-    points: points.map(p => ({
-        id: p.id.toString(),
-        vector: p.vector,
-        payload: p.payload
-    }))
-});
+
 
 console.log("inserted points:", points.length);
 
